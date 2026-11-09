@@ -1,0 +1,17 @@
+[project]
+name = "traffic-scene-detector"
+version = "0.1.0"
+description = "YOLO-based detection of people, vehicles and license plates"
+requires-python = ">=3.10"
+readme = "README.md"
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]

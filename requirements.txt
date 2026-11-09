@@ -1,0 +1,7 @@
+# Training and data dependencies.
+ultralytics
+fiftyone
+pyyaml
+pandas
+matplotlib
+tensorboard

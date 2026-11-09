@@ -1,0 +1,16 @@
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+
+data/*
+!data/.gitkeep
+runs/
+wandb/
+*.pt
+*.onnx
+
+.vscode/
+.DS_Store
+Thumbs.db

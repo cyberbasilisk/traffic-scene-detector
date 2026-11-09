@@ -1,0 +1,9 @@
+# Baseline training run. 
+model: yolo11s.pt        
+data: configs/data.yaml
+imgsz: 640
+epochs: 50
+batch: 16
+seed: 0
+project: runs
+name: baseline_640

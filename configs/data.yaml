@@ -1,0 +1,9 @@
+# Ultralytics-style dataset config. Paths are relative to the repo root.
+path: data/processed
+train: images/train
+val: images/val
+test: images/test
+names:
+  0: person
+  1: vehicle
+  2: license_plate
