@@ -1,4 +1,5 @@
 ## Traffic Scene Detector
+[![CI](https://github.com/cyberbasilisk/traffic-scene-detector/actions/workflows/ci.yml/badge.svg)](https://github.com/cyberbasilisk/traffic-scene-detector/actions/workflows/ci.yml)
 
 Detect **people**, **vehicles** and **license plates** in images and video with a YOLO model. Reproducible training, honest evaluation, and clear documentation.
 
