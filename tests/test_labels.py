@@ -1,6 +1,11 @@
 import pytest
 
-from traffic_detector.labels import rel_xywh_to_yolo_line, to_yolo_line
+from traffic_detector.labels import (
+    dedupe_boxes,
+    iou_xywh,
+    rel_xywh_to_yolo_line,
+    to_yolo_line,
+)
 
 
 def test_pixel_box_to_yolo():
@@ -33,3 +38,26 @@ def test_relative_box_to_yolo():
 def test_relative_box_bad_size_raises():
     with pytest.raises(ValueError):
         rel_xywh_to_yolo_line(0, 0.1, 0.1, 0.0, 0.2)
+
+
+def test_iou_identical_boxes_is_one():
+    assert iou_xywh((0.1, 0.1, 0.4, 0.4), (0.1, 0.1, 0.4, 0.4)) == pytest.approx(1.0)
+
+
+def test_iou_disjoint_boxes_is_zero():
+    assert iou_xywh((0.0, 0.0, 0.2, 0.2), (0.5, 0.5, 0.2, 0.2)) == 0.0
+
+
+def test_dedupe_removes_same_class_duplicate():
+    boxes = [(0, 0.1, 0.1, 0.4, 0.4), (0, 0.11, 0.1, 0.4, 0.4)]
+    assert len(dedupe_boxes(boxes)) == 1
+
+
+def test_dedupe_keeps_different_classes():
+    boxes = [(0, 0.1, 0.1, 0.4, 0.4), (1, 0.1, 0.1, 0.4, 0.4)]
+    assert len(dedupe_boxes(boxes)) == 2
+
+
+def test_dedupe_keeps_separate_objects_of_same_class():
+    boxes = [(1, 0.0, 0.0, 0.2, 0.2), (1, 0.5, 0.5, 0.2, 0.2)]
+    assert len(dedupe_boxes(boxes)) == 2

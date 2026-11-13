@@ -7,10 +7,15 @@ CLASS_NAMES: tuple[str, ...] = ("person", "vehicle", "license_plate")
 CLASS_IDS: dict[str, int] = {name: i for i, name in enumerate(CLASS_NAMES)}
 
 # Open Images label (lower-case) -> project class.
-# Several vehicle types are merged into one class for Part 1.
-# TODO: verify these strings against the Open Images V7 class list.
+# Label names checked against a 50-image validation sample.
+# Open Images has separate labels for "Man", "Woman", "Boy" and "Girl"; they all map to person
+# and overlapping duplicates are removed later (see labels.dedupe_boxes).
 OPEN_IMAGES_TO_PROJECT: dict[str, str] = {
     "person": "person",
+    "man": "person",
+    "woman": "person",
+    "boy": "person",
+    "girl": "person",
     "car": "vehicle",
     "bus": "vehicle",
     "truck": "vehicle",
@@ -18,6 +23,25 @@ OPEN_IMAGES_TO_PROJECT: dict[str, str] = {
     "motorcycle": "vehicle",
     "vehicle registration plate": "license_plate",
 }
+
+# Generic parent labels that can include boats, aircraft and so on.
+# Excluded (and counted separately) until they have been reviewed visually.
+AMBIGUOUS_LABELS: frozenset[str] = frozenset({"vehicle", "land vehicle"})
+
+# Open Images class names to request when downloading (exact capitalisation).
+OPEN_IMAGES_DOWNLOAD_CLASSES: list[str] = [
+    "Person",
+    "Man",
+    "Woman",
+    "Boy",
+    "Girl",
+    "Car",
+    "Bus",
+    "Truck",
+    "Van",
+    "Motorcycle",
+    "Vehicle registration plate",
+]
 
 
 def map_label(source_label: str) -> int | None:

@@ -8,11 +8,19 @@ Training and evaluating a detector for three classes: `person`, `vehicle`, `lice
 
 ## Classes
 
-| Id | Name | Source labels merged into it |
+| Id | Name | Open Images labels merged into it |
 |---|---|---|
-| 0 | person | Person |
+| 0 | person | Person, Man, Woman, Boy, Girl |
 | 1 | vehicle | Car, Bus, Truck, Van, Motorcycle |
 | 2 | license_plate | Vehicle registration plate |
+
+## Label policy
+
+- Every other Open Images label on the downloaded images (for example Wheel, Clothing, Tree) is dropped.
+- The generic labels `Vehicle` and `Land vehicle` are excluded for now, because they can include boats, aircraft and so on. They are counted separately and can be reviewed later.
+- Boxes marked `IsGroupOf` (one box for many objects) or `IsDepiction` (drawings, paintings, statues) are skipped.
+- A person labelled both `Person` and `Man` (and so on) would produce two boxes for one object, so same-class boxes that overlap another by more than 0.7 IoU are merged, keeping the larger.
+- Boxes are clamped to the image, and boxes with no area after clamping are dropped.
 
 ## Sources and licenses
 
@@ -32,9 +40,14 @@ CC BY licenses require crediting the original authors. Record exactly what appli
 
 Splits follow the source dataset's own splits, so no image appears in more than one.
 
+### Early sample check
+
+A 50-image sample from the validation split contained 77 `Person`, 31 `Car` and 6 `Vehicle registration plate` boxes before any filtering, so license plates are much rarer than the other classes. The final dataset needs extra images selected for plates.
+
 ## Known issues and limitations
 
-- License plates are very small relative to the frame, which makes them the hardest class.
+- License plates are very small relative to the frame, which makes them the hardest class, and they are scarce.
+- Open Images does not label every object in every image, so some people, vehicles and plates have no box. This adds noise to training and to the metrics.
 - Source images over-represent some regions, camera types and plate formats (TBD: document what you find).
 - Merged vehicle classes hide differences between vehicle types.
 
